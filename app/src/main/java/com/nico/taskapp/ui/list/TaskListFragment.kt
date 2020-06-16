@@ -1,4 +1,4 @@
-package com.nico.taskapp.ui
+package com.nico.taskapp.ui.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
