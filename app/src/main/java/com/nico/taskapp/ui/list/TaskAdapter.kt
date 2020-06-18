@@ -1,25 +1,44 @@
 package com.nico.taskapp.ui.list
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.nico.taskapp.R
 import com.nico.taskapp.model.Task
 
-class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class TaskAdapter(private val onClickListener: OnClickListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
+    private var listTask = ArrayList<Task>()
 
-}
-
-class TaskAdapter() : ListAdapter<Task, TaskViewHolder>(DIFF_CONFIG) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        TODO("Not yet implemented")
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
+        return TaskViewHolder(itemView)
     }
+
+    override fun getItemCount() = listTask.size
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val task = listTask[position]
+        holder.apply {
+            tvTaskName.text = task.name
+            cbTask.isChecked = task.isCompleted
+        }
     }
 
+    fun updateData(data: List<Task>) {
+        listTask.clear()
+        listTask.addAll(data)
+        notifyDataSetChanged()
+    }
 
+    class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvTaskName: TextView = view.findViewById(R.id.tvTitleName)
+        val cbTask: CheckBox = view.findViewById(R.id.cbTaskCompleted)
+    }
 
+    class OnClickListener(val clickListener: (task: Task) -> Unit){
+        fun onClick(task: Task) = clickListener(task)
+    }
 }
